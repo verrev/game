@@ -12,19 +12,16 @@ class CMesh
 {
 public:
 	static ID3D11InputLayout *getLayout(ID3D10Blob *s, const VERTEX_LAYOUT &vl, UINT &inputLayoutSize);
-	void init();
+	bool init(std::istream &inFile);
+	void createShaders(const VERTEX_LAYOUT &layout);
+	void createVBuffer(void *vertices);
 	void draw();
 	void destroy();
-public:
-	//std::vector<Vertex1P> mVertices1P;
-	//std::vector<Vertex1P1N> mVertices1P1N;
-	std::vector<Vertex1P1N1UV> mVertices1P1N1UV;
-
+private:
 	UINT mVerticeCount, mInputLayoutSize;
 	ID3D11InputLayout *mVertexLayout;
 	ID3D11VertexShader *mVShader;
 	ID3D11PixelShader *mPShader;
-private:
 	ID3D11Buffer *mVBuffer;
 };
 #endif

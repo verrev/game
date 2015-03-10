@@ -40,18 +40,69 @@ ID3D11InputLayout *CMesh::getLayout(ID3D10Blob *s, const VERTEX_LAYOUT &vl, UINT
 	CDirectX11::gDev->CreateInputLayout(ied, index, s->GetBufferPointer(), s->GetBufferSize(), &vrtxLyt);
 	return vrtxLyt;
 }
-void CMesh::init()
+void CMesh::createShaders(const VERTEX_LAYOUT &layout)
 {
-	mVerticeCount = mVertices1P1N1UV.size();
+	ID3D10Blob *sh;
+	std::string s = "models/";
+	s.append("vs.cso");
+	std::wstring ws;
+	ws.assign(s.begin(), s.end());
+	D3DReadFileToBlob(ws.c_str(), &sh);
+	CDirectX11::gDev->CreateVertexShader(sh->GetBufferPointer(), sh->GetBufferSize(), nullptr, &mVShader);
+	mVertexLayout = CMesh::getLayout(sh, layout, mInputLayoutSize);
 
+	s = "models/";
+	s.append("ps.cso");
+	ws.clear();
+	ws.assign(s.begin(), s.end());
+	D3DReadFileToBlob(ws.c_str(), &sh);
+	CDirectX11::gDev->CreatePixelShader(sh->GetBufferPointer(), sh->GetBufferSize(), nullptr, &mPShader);
+	safeRelease(sh);
+}
+void CMesh::createVBuffer(void *vertices)
+{
 	D3D11_BUFFER_DESC vbd = { 0 };
 	vbd.Usage = D3D11_USAGE_DEFAULT;
 	vbd.ByteWidth = mInputLayoutSize * mVerticeCount;
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	D3D11_SUBRESOURCE_DATA vdata = { 0 };
-	vdata.pSysMem = &mVertices1P1N1UV[0];
+	vdata.pSysMem = vertices;
 	CDirectX11::gDev->CreateBuffer(&vbd, &vdata, &mVBuffer);
+}
+bool CMesh::init(std::istream &inFile)
+{
+	MeshHeader meshHeader;
+	inFile.read((char*)&meshHeader, sizeof(MeshHeader));
+	mVerticeCount = meshHeader.mVerticeCount;
+	createShaders(meshHeader.mVertexLayout);
+	void *vertices = nullptr;
 
+	std::vector<Vertex1P> vertices1P;
+	std::vector<Vertex1P1N> vertices1P1N;
+	std::vector<Vertex1P1N1UV> vertices1P1N1UV;
+
+	if ((meshHeader.mVertexLayout & VERTEX_LAYOUT::POSITION)
+		&& (meshHeader.mVertexLayout & VERTEX_LAYOUT::NORMAL)
+		&& (meshHeader.mVertexLayout & VERTEX_LAYOUT::UVS)) {
+		vertices1P1N1UV.resize(mVerticeCount);
+		inFile.read((char*)&vertices1P1N1UV[0], mVerticeCount * mInputLayoutSize);
+		vertices = &vertices1P1N1UV[0];
+	}
+	else if ((meshHeader.mVertexLayout & VERTEX_LAYOUT::POSITION)
+		&& (meshHeader.mVertexLayout & VERTEX_LAYOUT::NORMAL)) {
+		vertices1P1N.resize(mVerticeCount);
+		inFile.read((char*)&vertices1P1N[0], mVerticeCount * mInputLayoutSize);
+		vertices = &vertices1P1N[0];
+	}
+	else if ((meshHeader.mVertexLayout & VERTEX_LAYOUT::POSITION)) {
+		vertices1P.resize(mVerticeCount);
+		inFile.read((char*)&vertices1P[0], mVerticeCount * mInputLayoutSize);
+		vertices = &vertices1P[0];
+	}
+	createVBuffer(vertices);
+	if (mVBuffer&&mVertexLayout&&mVShader&&mPShader&&mVBuffer)
+		return 1;
+	return 0;
 }
 void CMesh::draw()
 {

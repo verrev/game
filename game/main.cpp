@@ -25,7 +25,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	while (!gameWindow)
 		gameWindow = CreateWindowEx(0, L"wc1", L"pong", WS_VISIBLE | WS_BORDER, 0, 0, w, h, 0, 0, hInstance, 0);
 
-	if (CDirectX11::init(w, h, 1, gameWindow, D3D11_FILL_WIREFRAME)){ //D3D11_FILL_WIREFRAME // D3D11_FILL_SOLID
+	if (CDirectX11::init(w, h, 1, gameWindow)){ //D3D11_FILL_WIREFRAME // D3D11_FILL_SOLID
 		CSceneManager m;
 		m.init(w, h);
 		CTimer::init();
