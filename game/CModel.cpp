@@ -1,7 +1,7 @@
 #include "CModel.h"
 bool CModel::init(const std::string &fileName)
 {
-	std::fstream inFile(fileName);
+	std::ifstream inFile(fileName, std::ios::binary);
 	if (inFile.good() && inFile.is_open()){
 		D3D11_BUFFER_DESC cbd = { 0 };
 		cbd.Usage = D3D11_USAGE_DEFAULT;
@@ -25,7 +25,7 @@ bool CModel::init(const std::string &fileName)
 void CModel::draw()
 {
 	static float y = 0; y += 0.001f;
-	XMStoreFloat4x4(&mCB.mWorld, XMMatrixTranspose(XMMatrixIdentity()*XMMatrixRotationY(y)));
+	XMStoreFloat4x4(&mCB.mWorld, XMMatrixTranspose(XMMatrixIdentity()*XMMatrixRotationY(y)*XMMatrixScaling(0.1,0.1,0.1)));
 	CDirectX11::gDevCon->UpdateSubresource(mCBuffer, 0, 0, &mCB, 0, 0);
 	CDirectX11::gDevCon->VSSetConstantBuffers(1, 1, &mCBuffer); // 0 - cam 1 - model
 	for (auto mesh : mMeshes){

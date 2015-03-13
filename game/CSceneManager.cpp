@@ -3,7 +3,7 @@ void CSceneManager::init(const int &w, const int &h)
 {
 	mCamera.init(w, h);
 	mModels.push_back(new CModel);
-	mModels[0]->init("models/a.vmf");
+	mModels[0]->init("models/panamera.vmf");
 }
 void CSceneManager::draw(const float &dt)
 {

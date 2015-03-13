@@ -1,7 +1,7 @@
 #include "CMesh.h"
 ID3D11InputLayout *CMesh::getLayout(ID3D10Blob *s, const VERTEX_LAYOUT &vl, UINT &inputLayoutSize)
 {
-	D3D11_INPUT_ELEMENT_DESC ied[VERTEX_LAYOUT::MAX_LAYOUT_ITEMS];
+	D3D11_INPUT_ELEMENT_DESC ied[3];
 	UINT index = 0;
 	UINT size = 0;
 
