@@ -42,7 +42,7 @@ void CCamera::update(const float &lr, const float &bf, const float &yaw, const f
 	mTarget += mPosition;
 	XMStoreFloat4x4(&mView, XMMatrixLookAtLH(mPosition, mTarget, mUp));
 	mCBufferData.mView = XMMatrixTranspose(XMLoadFloat4x4(&mView));
-	CDirectX11::gDevCon->UpdateSubresource(mCBuffer, 0, 0, &mCBufferData, 0, 0);
+	CDirectX11::gDevCon->UpdateSubresource(mCBuffer, 0, 0, &mCBufferData, 0, 0);  // 0 - cam 1 - model 2 - material 3 - light
 	CDirectX11::gDevCon->VSSetConstantBuffers(0, 1, &mCBuffer);
 }
 void CCamera::destroy()

@@ -39,6 +39,12 @@
     <ClCompile Include="CModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CMaterialManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CLightManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CDirectX11.h">
@@ -60,6 +66,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CMaterialManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CLightManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

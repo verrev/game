@@ -6,6 +6,7 @@
 #include "CCamera.h"
 #include "CModel.h"
 #include <vector>
+#include "CLightManager.h"
 
 class CSceneManager
 {
@@ -16,6 +17,7 @@ public:
 	void destroy();
 private:
 	CCamera mCamera;
+	CLightManager mLightManager;
 	std::vector<CModel*>mModels;
 };
 #endif

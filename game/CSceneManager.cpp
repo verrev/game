@@ -2,10 +2,12 @@
 void CSceneManager::init(const int &w, const int &h)
 {
 	mCamera.init(w, h);
+	mLightManager.init();
+
 	mModels.push_back(new CModel);
-	mModels[0]->init("models/grid.vmf");
+	mModels[0]->init("models/grid.vmf",D3D11_FILL_WIREFRAME);
 	mModels.push_back(new CModel);
-	mModels[1]->init("models/teapot.vmf");
+	mModels[1]->init("models/panamera.vmf");
 }
 void CSceneManager::draw(const float &dt)
 {
@@ -13,8 +15,9 @@ void CSceneManager::draw(const float &dt)
 	Make it so the rasterizer state is loaded from the file.
 	*/
 	update(dt);
+	mLightManager.setLight(0); // modulate here
 	mModels[0]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(10, 10, 10));
-	mModels[1]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(1, 1, 1)); // DIS!
+	mModels[1]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-0.0)*XMMatrixScaling(0.1, 0.1, 0.1)); // DIS!
 	for (auto m : mModels){
 		m->draw();
 	}
@@ -42,6 +45,7 @@ void CSceneManager::update(const float &dt)
 void CSceneManager::destroy()
 {
 	mCamera.destroy();
+	mLightManager.destroy();
 	for (UINT i = 0; i < mModels.size(); ++i){
 		mModels[i]->destroy();
 		delete mModels[i];

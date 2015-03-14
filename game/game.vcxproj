@@ -87,6 +87,8 @@
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CDirectX11.cpp" />
     <ClCompile Include="CInput.cpp" />
+    <ClCompile Include="CLightManager.cpp" />
+    <ClCompile Include="CMaterialManager.cpp" />
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CModel.cpp" />
     <ClCompile Include="CSceneManager.cpp" />
@@ -97,6 +99,8 @@
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CDirectX11.h" />
     <ClInclude Include="CInput.h" />
+    <ClInclude Include="CLightManager.h" />
+    <ClInclude Include="CMaterialManager.h" />
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CModel.h" />
     <ClInclude Include="CSceneManager.h" />

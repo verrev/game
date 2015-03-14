@@ -1,6 +1,11 @@
 #include "CModel.h"
-bool CModel::init(const std::string &fileName)
+bool CModel::init(const std::string &fileName,const D3D11_FILL_MODE &fillMode)
 {
+	// load materials file name from model file 
+	std::string materialFileName = fileName;
+	materialFileName.replace(materialFileName.size() - 3, 3, "vma");
+	mMaterialManager.init(materialFileName);
+	// 
 	std::ifstream inFile(fileName, std::ios::binary);
 	if (inFile.good() && inFile.is_open()){
 		D3D11_BUFFER_DESC cbd = { 0 };
@@ -10,7 +15,6 @@ bool CModel::init(const std::string &fileName)
 		CDirectX11::gDev->CreateBuffer(&cbd, 0, &mCBuffer);
 		setWorldMatrix(XMMatrixIdentity());
 		
-		D3D11_FILL_MODE fillMode = D3D11_FILL_WIREFRAME; // D3D11_FILL_SOLID D3D11_FILL_WIREFRAME
 		D3D11_RASTERIZER_DESC rDesc;
 		ZeroMemory(&rDesc, sizeof(D3D11_RASTERIZER_DESC));
 		rDesc.FillMode = fillMode;
@@ -38,18 +42,20 @@ void CModel::draw()
 {
 	static float y = 0; y += 0.001f; const float multiplier = 10;
 	CDirectX11::gDevCon->UpdateSubresource(mCBuffer, 0, 0, &mCB, 0, 0);
-	CDirectX11::gDevCon->VSSetConstantBuffers(1, 1, &mCBuffer); // 0 - cam 1 - model
+	CDirectX11::gDevCon->VSSetConstantBuffers(1, 1, &mCBuffer);  // 0 - cam 1 - model 2 - material 3 - light
 	CDirectX11::gDevCon->RSSetState(mRasterizerState);
 	for (auto mesh : mMeshes){
 		mesh->draw();
+		mMaterialManager.setMaterial(0); // variate here
 	}
 }
 void CModel::destroy()
 {
-	for (UINT i = 0; i < mMeshes.size(); ++i){
-		mMeshes[i]->destroy();
-		delete mMeshes[i];
+	for (auto m : mMeshes){
+		m->destroy();
+		delete m;
 	}
 	safeRelease(mCBuffer);
 	safeRelease(mRasterizerState);
+	mMaterialManager.destroy();
 }
