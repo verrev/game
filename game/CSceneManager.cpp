@@ -3,11 +3,18 @@ void CSceneManager::init(const int &w, const int &h)
 {
 	mCamera.init(w, h);
 	mModels.push_back(new CModel);
-	mModels[0]->init("models/panamera.vmf");
+	mModels[0]->init("models/grid.vmf");
+	mModels.push_back(new CModel);
+	mModels[1]->init("models/teapot.vmf");
 }
 void CSceneManager::draw(const float &dt)
 {
+	/*
+	Make it so the rasterizer state is loaded from the file.
+	*/
 	update(dt);
+	mModels[0]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(10, 10, 10));
+	mModels[1]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(1, 1, 1)); // DIS!
 	for (auto m : mModels){
 		m->draw();
 	}

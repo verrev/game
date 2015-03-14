@@ -8,6 +8,14 @@ bool CModel::init(const std::string &fileName)
 		cbd.ByteWidth = sizeof(ModelCBuffer);
 		cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 		CDirectX11::gDev->CreateBuffer(&cbd, 0, &mCBuffer);
+		setWorldMatrix(XMMatrixIdentity());
+		
+		D3D11_FILL_MODE fillMode = D3D11_FILL_WIREFRAME; // D3D11_FILL_SOLID D3D11_FILL_WIREFRAME
+		D3D11_RASTERIZER_DESC rDesc;
+		ZeroMemory(&rDesc, sizeof(D3D11_RASTERIZER_DESC));
+		rDesc.FillMode = fillMode;
+		rDesc.CullMode = D3D11_CULL_BACK;
+		CDirectX11::gDev->CreateRasterizerState(&rDesc, &mRasterizerState);
 
 		ModelHeader mh;
 		inFile.read((char*)&mh, sizeof(ModelHeader));
@@ -22,12 +30,16 @@ bool CModel::init(const std::string &fileName)
 		return 1;
 	return 0;
 }
+void CModel::setWorldMatrix(const XMMATRIX &world)
+{
+	XMStoreFloat4x4(&mCB.mWorld, XMMatrixTranspose(world));
+}
 void CModel::draw()
 {
-	static float y = 0; y += 0.001f;
-	XMStoreFloat4x4(&mCB.mWorld, XMMatrixTranspose(XMMatrixIdentity()*XMMatrixRotationY(y)*XMMatrixScaling(0.1,0.1,0.1)));
+	static float y = 0; y += 0.001f; const float multiplier = 10;
 	CDirectX11::gDevCon->UpdateSubresource(mCBuffer, 0, 0, &mCB, 0, 0);
 	CDirectX11::gDevCon->VSSetConstantBuffers(1, 1, &mCBuffer); // 0 - cam 1 - model
+	CDirectX11::gDevCon->RSSetState(mRasterizerState);
 	for (auto mesh : mMeshes){
 		mesh->draw();
 	}
@@ -39,4 +51,5 @@ void CModel::destroy()
 		delete mMeshes[i];
 	}
 	safeRelease(mCBuffer);
+	safeRelease(mRasterizerState);
 }

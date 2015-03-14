@@ -28,7 +28,8 @@ VS_OUTPUT VS(float3 inPos : POSITION, float3 inNormal : NORMAL, float2 inUV : TE
 	float3 lightVecW = -float3(0,0,1);
 	float3 normalW = normalize(mul(float4(inNormal, 0), world).xyz);
 	float s = max(dot(lightVecW, normalW), 0);
-	output.Color.rgb = s*(diffuseMaterial*diffuseLight).rgb;
+	float4 ambientMaterial = float4(1, 0.2, 0.2, 1.0), ambientColor = float4(1, 0.2, 0.2, 1.0);
+	output.Color.rgb = ambientMaterial * ambientColor + s*(diffuseMaterial*diffuseLight).rgb;
 	output.Color.a = 1;
 	return output;
 }

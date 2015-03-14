@@ -13,7 +13,7 @@ class CMesh
 public:
 	static ID3D11InputLayout *getLayout(ID3D10Blob *s, const VERTEX_LAYOUT &vl, UINT &inputLayoutSize);
 	bool init(std::istream &inFile);
-	void createShaders(const VERTEX_LAYOUT &layout);
+	void createShaders(const VERTEX_LAYOUT &layout, const std::string &vsPath, const std::string &psPath);
 	void createVBuffer(void *vertices);
 	void draw();
 	void destroy();

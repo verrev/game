@@ -5,7 +5,7 @@ IDXGISwapChain *CDirectX11::gSwapChain = 0;
 ID3D11RenderTargetView *CDirectX11::gBackBufferView = 0;
 ID3D11DepthStencilView *CDirectX11::gDepthStencilView = 0;
 //-------------------------------------------------------------
-bool CDirectX11::init(const UINT &w, const UINT &h, bool isWindowed, const HWND &window, const D3D11_FILL_MODE &fillMode)
+bool CDirectX11::init(const UINT &w, const UINT &h, bool isWindowed, const HWND &window)
 {
 	if (w == GetSystemMetrics(0)) isWindowed = 0;
 	DXGI_MODE_DESC bd = { 0 };
@@ -65,15 +65,6 @@ bool CDirectX11::init(const UINT &w, const UINT &h, bool isWindowed, const HWND 
 	gDevCon->OMSetRenderTargets(1, &gBackBufferView, gDepthStencilView);
 
 	safeRelease(dsBuffer);
-
-	ID3D11RasterizerState* WireFrame;
-	D3D11_RASTERIZER_DESC wfdesc;
-	ZeroMemory(&wfdesc, sizeof(D3D11_RASTERIZER_DESC));
-	wfdesc.FillMode = fillMode; 
-	wfdesc.CullMode = D3D11_CULL_BACK;
-	gDev->CreateRasterizerState(&wfdesc, &WireFrame);
-	gDevCon->RSSetState(WireFrame);
-	safeRelease(WireFrame);
 
 	if (gDev&&gDevCon&&gSwapChain&&gBackBufferView&&gDepthStencilView) return 1;
 	return 0;

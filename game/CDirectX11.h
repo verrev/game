@@ -14,7 +14,7 @@ void safeRelease(T obj)
 class CDirectX11
 {
 public:
-	static bool init(const UINT &w, const UINT &h, bool isWindowed, const HWND &window, const D3D11_FILL_MODE &fillMode = D3D11_FILL_SOLID);
+	static bool init(const UINT &w, const UINT &h, bool isWindowed, const HWND &window);
 	static void destroy();
 public:
 	static ID3D11Device *gDev;
