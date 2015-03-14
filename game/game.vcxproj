@@ -59,10 +59,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <FxCompile>
-      <EntryPointName>VS</EntryPointName>
+      <EntryPointName>PS</EntryPointName>
     </FxCompile>
     <FxCompile>
-      <ShaderType>Vertex</ShaderType>
+      <ShaderType>Pixel</ShaderType>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -107,7 +107,7 @@
     <ClInclude Include="CTimer.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="vs.hlsl" />
+    <FxCompile Include="ps.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

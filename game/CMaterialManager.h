@@ -10,10 +10,14 @@ class CMaterialManager
 {
 public:
 	bool init(const std::string &fileName);
+	void createTextures();
 	void setMaterial(const UINT &id);
 	void destroy();
 private:
 	std::vector<Material> mMaterials;
+	std::vector<Texture> mTexturepaths;
+	std::vector<ID3D11ShaderResourceView*> mTextures;
+	ID3D11SamplerState* mState;
 	ID3D11Buffer *mCBuffer;
 };
 #endif

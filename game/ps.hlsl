@@ -1,9 +1,33 @@
+Texture2D tex;
+SamplerState samplerState;
+cbuffer MaterialCBuffer : register(b0)
+{
+	int type;
+	float3 ambient, diffuse, specular, emissive;
+	float alpha, shininess, reflectivity;
+};
+cbuffer LightCBuffer : register(b1)
+{
+	int lightType;
+	float4 lightDiffuseCol, lightAmbientCol;
+	float3 lightDiffuseDir;
+};
 struct VS_OUTPUT
 {
 	float4 Pos : SV_POSITION;
-	float4 Color : COLOR;
+	float3 Normal : NORMAL;
+	float2 UV : TEXCOORD0;
 };
 float4 PS(VS_OUTPUT input) : SV_TARGET
 {
-	return input.Color;
+	// lighting
+	float4 outColor = float4(1,1,1,1);
+	if (type == 0 || type == 1){
+		float s = max(dot(lightDiffuseDir, input.Normal), 0); 
+		outColor.rgb = ambient * lightAmbientCol + s*(tex.Sample(samplerState, input.UV).rgb*lightDiffuseCol).rgb;
+		outColor.a = alpha;
+	}
+	return outColor;
 }
+
+

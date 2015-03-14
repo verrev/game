@@ -42,7 +42,7 @@ void CModel::draw()
 {
 	static float y = 0; y += 0.001f; const float multiplier = 10;
 	CDirectX11::gDevCon->UpdateSubresource(mCBuffer, 0, 0, &mCB, 0, 0);
-	CDirectX11::gDevCon->VSSetConstantBuffers(1, 1, &mCBuffer);  // 0 - cam 1 - model 2 - material 3 - light
+	CDirectX11::gDevCon->VSSetConstantBuffers(1, 1, &mCBuffer);  // 0 - cam 1 - model 
 	CDirectX11::gDevCon->RSSetState(mRasterizerState);
 	for (auto mesh : mMeshes){
 		mesh->draw();
