@@ -5,9 +5,11 @@ void CSceneManager::init(const int &w, const int &h)
 	mLightManager.init();
 
 	mModels.push_back(new CModel);
-	mModels[0]->init("models/grid.vmf",D3D11_FILL_WIREFRAME);
+	mModels[0]->init("models/box.vmf");
 	mModels.push_back(new CModel);
-	mModels[1]->init("models/man.vmf");
+	mModels[1]->init("models/sphere.vmf");
+	mModels.push_back(new CModel);
+	mModels[2]->init("models/panamera.vmf");
 }
 void CSceneManager::draw(const float &dt)
 {
@@ -17,7 +19,9 @@ void CSceneManager::draw(const float &dt)
 	update(dt);
 	mLightManager.setLight(0); // modulate here
 	mModels[0]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(10, 10, 10));
-	mModels[1]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(1, 1, 1)); // DIS!
+	mModels[1]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(1, 1, 1)*XMMatrixTranslation(-2,1,0)); 
+	mModels[2]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-0)*XMMatrixScaling(0.01, 0.01, 0.01)*XMMatrixTranslation(1, 0.1, 0));
+
 	for (auto m : mModels){
 		m->draw();
 	}

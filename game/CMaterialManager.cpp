@@ -14,13 +14,14 @@ bool CMaterialManager::init(const std::string &fileName)
 		TextureHeader th;
 		inFile.read((char*)&th, sizeof(TextureHeader));
 		mTexturepaths.resize(th.mTextureCount);
-		inFile.read((char*)&mTexturepaths[0], sizeof(Texture) * th.mTextureCount);
+		if (mTexturepaths.size())
+			inFile.read((char*)&mTexturepaths[0], sizeof(Texture) * th.mTextureCount);
 		inFile.close();
 		D3D11_BUFFER_DESC cbd = { 0 };
 		cbd.Usage = D3D11_USAGE_DEFAULT;
 		cbd.ByteWidth = sizeof(Material);
 		cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		CDirectX11::gDev->CreateBuffer(&cbd, 0, &mCBuffer);
+		HRESULT hr = CDirectX11::gDev->CreateBuffer(&cbd, 0, &mCBuffer); 
 		createTextures(); // EXPERIMENTAL!
 	}
 	if (mMaterials.size()>0&&mCBuffer) return 1;
@@ -54,6 +55,12 @@ void CMaterialManager::createTextures()
 }
 void CMaterialManager::setMaterial(const UINT &id)
 {
+	if (id < 0){ //reset the texs
+		CDirectX11::gDevCon->PSSetSamplers(0, 1, &mState);
+		CDirectX11::gDevCon->PSSetShaderResources(0, 1, nullptr);
+		CDirectX11::gDevCon->UpdateSubresource(mCBuffer, 0, 0, nullptr, 0, 0);
+		CDirectX11::gDevCon->PSSetConstantBuffers(0, 1, &mCBuffer);  
+	}
 	if (id < mTextures.size()){
 		CDirectX11::gDevCon->PSSetSamplers(0, 1, &mState);
 		CDirectX11::gDevCon->PSSetShaderResources(0, 1, &mTextures[id]);

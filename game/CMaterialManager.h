@@ -10,6 +10,7 @@ class CMaterialManager
 {
 public:
 	bool init(const std::string &fileName);
+	inline int getTextureCount() { return mTextures.size(); }
 	void createTextures();
 	void setMaterial(const UINT &id);
 	void destroy();

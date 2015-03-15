@@ -1,7 +1,7 @@
 #include "CLightManager.h"
 bool CLightManager::init()
 {
-	Light l(LIGHT_TYPE::DIFFUSE, XMFLOAT4(1.0, 0.2, 0.2, 0.2), XMFLOAT4(1.0, 0.2, 0.2, 0.2), XMFLOAT3(0.0, 0.0, -1.0));
+	Light l(LIGHT_TYPE::DIFFUSE, XMFLOAT4(1.0, 0.2, 0.2, 0.2), XMFLOAT4(1.0, 0.2, 0.2, 0.2), XMFLOAT3(0.0, 0.0, 1.0));
 	mLights.push_back(l); // load from scene or sth
 	D3D11_BUFFER_DESC cbd = { 0 };
 	cbd.Usage = D3D11_USAGE_DEFAULT;
