@@ -23,15 +23,16 @@ struct VS_OUTPUT
 float4 PS(VS_OUTPUT input) : SV_TARGET
 {
 	if (hasTextures){
+		///////////////////////////////////////////////////////////////
 		return tex.Sample(samplerState, input.UV);
 		// lighting
 		float4 outColor = float4(1, 1, 1, 1);
 			if (type == 0 || type == 1){
 				float s = max(dot(lightDiffuseDir, input.Normal), 0);
-				outColor.rgb = ambient * lightAmbientCol + s*(tex.Sample(samplerState, input.UV).rgb*lightDiffuseCol).rgb;
+				outColor.rgb = ambient.rgb * lightAmbientCol.rgb + s*(diffuse*lightDiffuseCol).rgb;
 				outColor.a = alpha;
 			}
-		return outColor;
+		return outColor * tex.Sample(samplerState, input.UV);
 	}
 	return float4(1, 1, 1, 1);
 }
