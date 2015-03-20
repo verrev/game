@@ -5,22 +5,36 @@ void CSceneManager::init(const int &w, const int &h)
 	mLightManager.init();
 
 	mModels.push_back(new CModel);
-	mModels[0]->init("models/box.vmf");
+	mModels[0]->init("models/panamera.vmf");
+	/*
 	mModels.push_back(new CModel);
 	mModels[1]->init("models/sphere.vmf");
 	mModels.push_back(new CModel);
-	mModels[2]->init("models/panamera.vmf");
+	mModels[2]->init("models/box.vmf");
+	mModels.push_back(new CModel);
+	mModels[3]->init("models/panamera.vmf");
+	*/
 }
 void CSceneManager::draw(const float &dt)
 {
 	/*
 	Make it so the rasterizer state is loaded from the file.
 	*/
+
 	update(dt);
 	mLightManager.setLight(0); // modulate here
-	mModels[0]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(10, 10, 10));
-	mModels[1]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(1, 1, 1)*XMMatrixTranslation(-2,1,0)); 
-	mModels[2]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-0)*XMMatrixScaling(0.01, 0.01, 0.01)*XMMatrixTranslation(1, 0.1, 0));
+	/*
+	for (int i = -5; i < 5; ++i){
+		for (int j = -5; j < 5; ++j){ // this is a hack.
+			mModels[0]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(1, 1, 1)*XMMatrixTranslation(i, 0, j));
+			mModels[0]->draw();
+		}
+	}
+	mModels[1]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(1, 1, 1)*XMMatrixTranslation(-3,1,0)); 
+	mModels[2]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(1, 1, 1)*XMMatrixTranslation(-1, 0, 0));
+	mModels[3]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-0)*XMMatrixScaling(1, 1, 1)*XMMatrixTranslation(1, 0.2, 0));
+	*/
+	mModels[0]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-0)*XMMatrixScaling(1, 1, 1)*XMMatrixTranslation(1, 0.2, 0));
 
 	for (auto m : mModels){
 		m->draw();

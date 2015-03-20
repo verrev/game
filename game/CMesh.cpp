@@ -64,8 +64,10 @@ void CMesh::createVBuffer(void *vertices)
 	vdata.pSysMem = vertices;
 	CDirectX11::gDev->CreateBuffer(&vbd, &vdata, &mVBuffer);
 }
-bool CMesh::init(std::istream &inFile)
+bool CMesh::init(std::istream &inFile, CMaterialManager *m)
 {
+	mMaterialManager = m;
+
 	MeshHeader meshHeader;
 	inFile.read((char*)&meshHeader, sizeof(MeshHeader));
 	mVerticeCount = meshHeader.mVerticeCount;
@@ -97,6 +99,14 @@ bool CMesh::init(std::istream &inFile)
 		vertices = &vertices1P[0]; 
 	}
 	createVBuffer(vertices);
+	// EXPERIMENTAL!
+	MaterialIndexHeader mih;
+	inFile.read((char*)&mih, sizeof(MaterialIndexHeader));
+	if (mih.mSubmeshCount){
+		mMaterialIndices.resize(mih.mSubmeshCount);
+		inFile.read((char*)&mMaterialIndices[0], mMaterialIndices.size() * sizeof(MaterialIndex));
+	}
+	//////////////////
 	if (mVBuffer&&mVertexLayout&&mVShader&&mPShader&&mVBuffer)
 		return 1;
 	return 0;
@@ -109,7 +119,10 @@ void CMesh::draw()
 	CDirectX11::gDevCon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	UINT offset = 0;
 	CDirectX11::gDevCon->IASetVertexBuffers(0, 1, &mVBuffer, &mInputLayoutSize, &offset);
-	CDirectX11::gDevCon->Draw(mVerticeCount, 0);
+	for (auto mi : mMaterialIndices){
+		mMaterialManager->setMaterial(mi.mMaterialIndex); // variate here
+		CDirectX11::gDevCon->Draw(mi.mEnd - mi.mBegin + 1, mi.mBegin);
+	}
 }
 void CMesh::destroy()
 {

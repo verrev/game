@@ -26,7 +26,7 @@ bool CModel::init(const std::string &fileName,const D3D11_FILL_MODE &fillMode)
 
 		for (UINT i = 0; i < mh.mMeshCount; ++i){
 			mMeshes.push_back(new CMesh);
-			mMeshes[mMeshes.size() - 1]->init(inFile);
+			mMeshes[mMeshes.size() - 1]->init(inFile,&mMaterialManager);
 		}
 		inFile.close();
 	}
@@ -44,10 +44,8 @@ void CModel::draw()
 	CDirectX11::gDevCon->VSSetConstantBuffers(1, 1, &mCBuffer);  // 0 - cam 1 - model 
 	CDirectX11::gDevCon->RSSetState(mRasterizerState);
 	for (auto mesh : mMeshes){
-		mMaterialManager.setMaterial(0); // variate here
 		mesh->draw();
 	}
-	mMaterialManager.setMaterial(-1); // reset textures
 }
 void CModel::destroy()
 {

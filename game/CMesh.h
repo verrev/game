@@ -7,17 +7,20 @@
 #pragma comment(lib,"d3dcompiler.lib")
 #include "CDirectX11.h"
 #include "C:\Users\Vootele\Desktop\fbx2vmf\fbx2vmf\FileStructure.h"
+#include "CMaterialManager.h"
 
 class CMesh
 {
 public:
 	static ID3D11InputLayout *getLayout(ID3D10Blob *s, const VERTEX_LAYOUT &vl, UINT &inputLayoutSize);
-	bool init(std::istream &inFile);
+	bool init(std::istream &inFile,CMaterialManager *matManager);
 	void createShaders(const VERTEX_LAYOUT &layout, const std::string &vsPath, const std::string &psPath);
 	void createVBuffer(void *vertices);
 	void draw();
 	void destroy();
 private:
+	CMaterialManager *mMaterialManager;
+	std::vector<MaterialIndex> mMaterialIndices;
 	UINT mVerticeCount, mInputLayoutSize;
 	ID3D11InputLayout *mVertexLayout;
 	ID3D11VertexShader *mVShader;

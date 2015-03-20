@@ -55,12 +55,6 @@ void CMaterialManager::createTextures()
 }
 void CMaterialManager::setMaterial(const UINT &id)
 {
-	if (id < 0){ //reset the texs
-		CDirectX11::gDevCon->PSSetSamplers(0, 1, &mState);
-		CDirectX11::gDevCon->PSSetShaderResources(0, 1, nullptr);
-		CDirectX11::gDevCon->UpdateSubresource(mCBuffer, 0, 0, nullptr, 0, 0);
-		CDirectX11::gDevCon->PSSetConstantBuffers(0, 1, &mCBuffer);  
-	}
 	if (id < mTextures.size()){
 		CDirectX11::gDevCon->PSSetSamplers(0, 1, &mState);
 		CDirectX11::gDevCon->PSSetShaderResources(0, 1, &mTextures[id]);
