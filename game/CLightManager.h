@@ -4,7 +4,6 @@
 #include <string>
 #include <fstream>
 #include <vector>
-using namespace DirectX;
 
 enum LIGHT_TYPE
 {

@@ -45,6 +45,10 @@ void CCamera::update(const float &lr, const float &bf, const float &yaw, const f
 	CDirectX11::gDevCon->UpdateSubresource(mCBuffer, 0, 0, &mCBufferData, 0, 0);  // 0 - cam 1 - model 2 - material 3 - light
 	CDirectX11::gDevCon->VSSetConstantBuffers(0, 1, &mCBuffer);
 }
+XMVECTOR CCamera::getPos()
+{
+	return mPosition;
+}
 void CCamera::destroy()
 {
 	safeRelease(mCBuffer);

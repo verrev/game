@@ -5,6 +5,7 @@ void CSceneManager::init(const int &w, const int &h)
 	TODO: ADD FAILSAFES FOR RESOURCE LOADING (SHADERS, MODELS (KIND-OF ALREADY EXISTS)...)
 	*/
 	mCamera.init(w, h);
+	mSky.init("models/box.vmf","models/skymap.dds");
 	mLightManager.init();
 	mLightManager.setLight(0); // modulate here
 
@@ -26,6 +27,8 @@ void CSceneManager::draw(const float &dt)
 	*/
 
 	update(dt);
+	mSky.draw(mCamera.getPos());
+	//mSky.draw(mCamera);
 	/*
 	for (int i = -5; i < 5; ++i){
 		for (int j = -5; j < 5; ++j){ // this is a hack.
@@ -37,7 +40,7 @@ void CSceneManager::draw(const float &dt)
 	mModels[2]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(1, 1, 1)*XMMatrixTranslation(-1, 0, 0));
 	mModels[3]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-0)*XMMatrixScaling(1, 1, 1)*XMMatrixTranslation(1, 0.2, 0));
 	*/
-	mModels[0]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(0.15, 0.15, 0.15)*XMMatrixTranslation(0, -2, 3));
+	mModels[0]->setWorldMatrix(XMMatrixIdentity()*XMMatrixRotationY(0)*XMMatrixRotationX(-XM_PIDIV2)*XMMatrixScaling(0.2, 0.2, 0.2)*XMMatrixTranslation(0, -2, 3));
 
 	for (auto m : mModels){
 		m->draw();
@@ -66,6 +69,7 @@ void CSceneManager::update(const float &dt)
 void CSceneManager::destroy()
 {
 	mCamera.destroy();
+	mSky.destroy();
 	mLightManager.destroy();
 	for (UINT i = 0; i < mModels.size(); ++i){
 		mModels[i]->destroy();

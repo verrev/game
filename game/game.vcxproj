@@ -59,10 +59,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <FxCompile>
-      <EntryPointName>PS</EntryPointName>
+      <EntryPointName>VS</EntryPointName>
     </FxCompile>
     <FxCompile>
-      <ShaderType>Pixel</ShaderType>
+      <ShaderType>Vertex</ShaderType>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -92,6 +92,7 @@
     <ClCompile Include="CMesh.cpp" />
     <ClCompile Include="CModel.cpp" />
     <ClCompile Include="CSceneManager.cpp" />
+    <ClCompile Include="CSky.cpp" />
     <ClCompile Include="CTimer.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -104,10 +105,11 @@
     <ClInclude Include="CMesh.h" />
     <ClInclude Include="CModel.h" />
     <ClInclude Include="CSceneManager.h" />
+    <ClInclude Include="CSky.h" />
     <ClInclude Include="CTimer.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="ps.hlsl" />
+    <FxCompile Include="sky_vs.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

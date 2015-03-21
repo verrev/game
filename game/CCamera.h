@@ -1,7 +1,6 @@
 #ifndef _CCAMERA_H_
 #define _CCAMERA_H_
 #include "CDirectX11.h"
-using namespace DirectX;
 struct CameraCBuffer
 {
 	XMMATRIX mView;
@@ -12,6 +11,7 @@ class CCamera
 public:
 	void init(const int &w, const int &h);
 	void update(const float &lr, const float &bf, const float &yaw, const float &pitch);
+	XMVECTOR getPos();
 	void destroy();
 private:
 	ID3D11Buffer *mCBuffer;

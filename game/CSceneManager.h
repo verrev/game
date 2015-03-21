@@ -7,6 +7,7 @@
 #include "CModel.h"
 #include <vector>
 #include "CLightManager.h"
+#include "CSky.h"
 
 class CSceneManager
 {
@@ -19,5 +20,6 @@ private:
 	CCamera mCamera;
 	CLightManager mLightManager;
 	std::vector<CModel*>mModels;
+	CSky mSky;
 };
 #endif
